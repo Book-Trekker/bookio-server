@@ -17,6 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const user = require("./routes/userRoute");
 
 app.use("/api/v1", user);
+app.use("/", (req, res)=> {
+    res.send("Server connection successful")
+});
 
 app.use(errorHandlerGard);
 
