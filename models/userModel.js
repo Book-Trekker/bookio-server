@@ -6,13 +6,13 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please enter your name"],
-    maxLength: [28, "Name cannot exceed 28 characterr"],
+    maxLength: [28, "Name cannot exceed 28 character"],
     minLength: [3, "Name should have more  then 3 characters"],
   },
   email: {
     type: String,
-    required: [true, "Please enter your Email"],
     unique: true,
+    required: [true, "Please enter your Email"],
     validate: [validator.isEmail, "Please enter your valid Email"],
   },
   bio: {
@@ -31,15 +31,14 @@ const userSchema = new mongoose.Schema({
   avatar: {
     publicId: {
       type: String,
-      required: true,
     },
     url: {
       type: String,
-      required: true,
     },
   },
   role: {
     type: String,
+    enum: ["user", "seller"],
     default: "user",
   },
   createdAt: {
@@ -49,5 +48,15 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });
+
+userSchema.methods.getResetPassword = function () {
+  const resetToken = crypto.randomBytes(20).toString("hex");
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+  this.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+  return resetToken;
+};
 
 module.exports = mongoose.model("User", userSchema);
