@@ -3,11 +3,23 @@ const validator = require("validator");
 const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  fname: {
     type: String,
-    required: [true, "Please enter your name"],
-    maxLength: [28, "Name cannot exceed 28 character"],
+    maxLength: [30, "Name cannot exceed 30 character"],
     minLength: [3, "Name should have more  then 3 characters"],
+  },
+  lname: {
+    type: String,
+    maxLength: [30, "Name cannot exceed 30 character"],
+    minLength: [3, "Name should have more  then 3 characters"],
+  },
+  shop: {
+    type: String,
+    maxLength: [40, "shop name cannot exceed 30 character"],
+    minLength: [5, "shop name should have more  then 3 characters"],
+  },
+  phone: {
+    type: Number,
   },
   email: {
     type: String,
@@ -15,14 +27,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter your Email"],
     validate: [validator.isEmail, "Please enter your valid Email"],
   },
-  bio: {
-    type: String,
-    maxLength: [100, "bio cannot exceed 100 character"],
-  },
-  address: {
-    type: String,
-    maxLength: [50, "address cannot exceed 28 character"],
-  },
+
   password: {
     type: String,
     required: [true, "Please enter your password"],
@@ -38,7 +43,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["user", "seller"],
+    enum: ["user", "vendor", "admin"],
     default: "user",
   },
   createdAt: {
