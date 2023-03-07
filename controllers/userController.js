@@ -8,12 +8,13 @@ const crypto = require("crypto");
 // create a new user
 exports.registerUser = tryCatch(async (req, res, next) => {
   const userData = req.body;
-  const { name, email, password } = userData;
+  const { name, email, password, role } = userData;
   const hashPassword = await bcrypt.hash(password, 10);
   const user = await User.create({
     name,
     email,
     password: hashPassword,
+    role,
   });
   const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "5h",
@@ -51,5 +52,14 @@ exports.loginUser = tryCatch(async (req, res, next) => {
     success: true,
     user,
     token,
+  });
+});
+
+// Load user
+exports.loadUser = tryCatch(async (req, res, next) => {
+  const user = await User.findOne({ _id: req.params.id });
+  res.status(200).json({
+    success: true,
+    user,
   });
 });
