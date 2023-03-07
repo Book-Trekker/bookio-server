@@ -20,7 +20,7 @@ const user = require("./routes/userRoute");
 app.use("/api/v1", user);
 app.use("/", (req, res)=> {
     // res.send("Server connection successful")
-    res.sendFile(path.join(__dirname, "./Views/index.html"));
+    res.sendFile(path.join(__dirname, "./views/index.html"));
 });
 
 /* testing api  */
